@@ -62,9 +62,17 @@ endif()
 if(LINUX)
   find_package(Boost 1.74.0 REQUIRED COMPONENTS regex)
 else()
-  find_package(Boost 1.77.0 REQUIRED COMPONENTS regex)
+  find_package(Boost 1.77.0 REQUIRED)
 endif()
 if(Boost_FOUND)
+  message(status "Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS}")
+  message(status "Boost_LIBRARY_DIRS = ${Boost_LIBRARY_DIRS}")
+  # Set the path to the directory containing your Boost libraries
+  set(Boost_LIBRARY_DIRS "${Boost_INCLUDE_DIRS}/stage/lib")
+
+  # Clear CMake's internal Boost variables to prevent using stale values
+  unset(Boost_LIBRARIES CACHE)
+
   include_directories(${Boost_INCLUDE_DIRS})
   link_directories(${Boost_LIBRARY_DIRS})
   add_definitions(-DBOOST_DLL_USE_STD_FS)

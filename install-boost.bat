@@ -13,7 +13,27 @@ aria2c https://github.com/boostorg/boost/releases/download/boost-%boost_version%
 pushd %src_dir%
 7z x boost-%boost_version%.7z
 cd boost-%boost_version%
+
+rem Create user-config.jam
+echo using clang-win : : clangcl.exe : > user-config.jam
+echo     ^<cxxflags^>"-std=c++14" >> user-config.jam
+echo     ^<cxxflags^>"-fms-compatibility-version=19.29" >> user-config.jam
+echo     ^<cxxflags^>"-D_CRT_SECURE_NO_WARNINGS" >> user-config.jam
+echo     ; >> user-config.jam
+
 call .\bootstrap.bat
-.\b2 headers
+
+rem Build Boost
+b2.exe ^
+    toolset=clang-win ^
+    address-model=64 ^
+    variant=release ^
+    link=static ^
+    threading=multi ^
+    runtime-link=static ^
+    --build-type=complete ^
+    -j%NUMBER_OF_PROCESSORS% ^
+    stage
+
 popd
 :boost_found
