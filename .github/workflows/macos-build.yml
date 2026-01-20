@@ -35,8 +35,9 @@ jobs:
 
       - name: Configure build environment
         run: |
-          brew install ninja
+          brew install llvm ninja
           echo "CMAKE_GENERATOR=Ninja"  >> $GITHUB_ENV
+          echo "/usr/local/opt/llvm/bin" >> $GITHUB_PATH
           echo git_ref_name="$(git describe --always)" >> $GITHUB_ENV
 
       - name: Configure build variant
