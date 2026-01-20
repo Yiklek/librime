@@ -32,7 +32,7 @@ jobs:
       RIME_PLUGINS: ${{ inputs.rime_plugins }}
     steps:
       - name: Checkout last commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # Repository to check out (format: owner/repo)
           repository: ${{ inputs.repository }}   # optional, defaults to current repository
